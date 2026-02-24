@@ -23,14 +23,14 @@ librarySchema.pre('save', async function () {
 librarySchema.static.login = async function login(name, password) {
     const library = Library.findOne({ name });
 
-    if (!library){
-        throw new Error("");
+    if (library){
+        const isCorrect = await bcrypt.compare(password, this.password); 
+        if (isCorrect){
+            return library;
+        }
+        throw new Error("incorrect Password");
     }
-
-    const isCorrect = await bcrypt.compare(password, this.password); 
-    if(!isCorrect){
-        throw new Error("");
-    }
+    throw new Error("Library not found");
 }
 
 
