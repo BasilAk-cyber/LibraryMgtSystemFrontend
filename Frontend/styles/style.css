@@ -9,9 +9,15 @@
 }
 
 body {
+    display: flex;
     min-height: 100vh;
     background-color: #f0f2f5;
 }
+
+.sidebar.collapsed ~ main {
+    margin-left: 96px;                /* 76px + 20px */
+}
+
 
 .sidebar {
     background-color: #03327e;
@@ -96,6 +102,77 @@ body {
     align-items: center;
 }
 
+main {
+    flex: 1;
+    margin-left: 290px;               
+    padding: 20px;
+    transition: margin-left 0.4s ease;
+    min-height: 100vh;
+}
+
+.container{
+    width: 90%;
+    height: 90vh;
+    padding: 10px;
+    border: 1px solid #03327e;
+    border-radius: 16px;
+}
+
+.header p {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #03327e;
+}
+
+
+.form-container{
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px;
+
+}
+
+.form-input{
+    display: grid;
+}
+
+.page-header{
+    font-weight: bolder;
+    font-size: 32px;
+}
+
+.form-input input{
+    height: 30px;
+    border-radius: 15px;
+    border: 1px solid #03327e;
+    padding: 10px;
+    font-family: "Poppins";
+    background-color: #f0f2f5;
+}
+
+.form-input input:focus {
+    border: 1px solid #03327e;
+    outline: 2px solid #03327e;
+    outline-offset: 2px;
+}
+
+.add-book-btn{
+    width: 50%;
+    height: 30px;
+    border-radius: 15px;
+    background-color: #03327e;
+    color: #f0f2f5;
+    border: none;
+    align-self: center;
+}
+
+.button{
+    align-self: center;
+}
 @media screen {
     
 }
