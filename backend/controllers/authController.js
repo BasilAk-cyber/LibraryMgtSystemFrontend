@@ -17,7 +17,7 @@ function generateToken(user) {
   return token;
 }
 
-const librarySignUp = async (req, res) => {
+export const librarySignUp = async (req, res) => {
     const { name, password} = req.body;
 
     if(!name || !password){
@@ -47,7 +47,7 @@ const librarySignUp = async (req, res) => {
     }
 }
 
-const librarylogin = async (req, res) => {
+export const libraryLogin = async (req, res) => {
     const { name, password} = req.body;
 
     if(!name || !password){

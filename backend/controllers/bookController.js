@@ -2,7 +2,7 @@
 
 import Book from '../models/books.js';
 
-const addBook = async (req, res) => {
+export const addBook = async (req, res) => {
 
     try {
         const{ name, author, isbn, amount = 1} = req.body;
@@ -40,7 +40,7 @@ const addBook = async (req, res) => {
     }    
 }
 
-const viewBook = async (req, res) => {
+export const viewBook = async (req, res) => {
 
     const title = req.params.name; 
 

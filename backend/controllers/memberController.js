@@ -2,7 +2,7 @@
 
 import Member from '../models/member.js';
 
-export const addMember = (req, res) => {
+export const addMember = async (req, res) => {
 
     const { name, email} = req.body;
 
@@ -21,7 +21,7 @@ export const addMember = (req, res) => {
 
         res.status(201).json({
             msg:"User created succesfully",
-            id: member._id;
+            id: member._id
         })
 
     } catch (error) {
@@ -31,7 +31,7 @@ export const addMember = (req, res) => {
     }
 }
 
-export const viewMembers = (req, res) => {
+export const viewMembers = async (req, res) => {
     try {
         
        const member = await Member.find();

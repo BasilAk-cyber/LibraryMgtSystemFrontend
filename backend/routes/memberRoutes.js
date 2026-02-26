@@ -1,6 +1,6 @@
 import express from 'express';
-import  from '../controllers/memberController.js';
+import { addMember, viewMembers} from '../controllers/memberController.js';
 const router = express.Router();
 
-router.get()
-router.post()
+router.post("/add", addMember)
+router.add("/view", viewMembers)
