@@ -1,17 +1,11 @@
 import mongoose from 'mongoose';
-const bcrypt = require('bcryptjs');
+import bcrypt from 'bcryptjs';
 const Schema = mongoose.Schema;
 
 const librarySchema = new Schema({
-    name: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
+    name: { type: String, required: [true, 'Please enter name'], unique: [true, 'Name already exists'], trim: true, 
+            minlength: [3, 'Name should be more than 3 characters'] },
+    password: { type: String, required: true }
 })
 
 librarySchema.pre('save', async function () {
@@ -34,6 +28,6 @@ librarySchema.static.login = async function login(name, password) {
 }
 
 
-const Library = mongoose.model('Library', bookSchema);
+const Library = mongoose.model('Library', librarySchema);
 
 export default Library;

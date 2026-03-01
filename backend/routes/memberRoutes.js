@@ -4,3 +4,5 @@ const router = express.Router();
 
 router.post("/add", addMember)
 router.add("/view", viewMembers)
+
+export default router;

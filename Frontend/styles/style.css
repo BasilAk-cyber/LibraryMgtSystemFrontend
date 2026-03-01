@@ -139,7 +139,7 @@ main {
 .form-input{
     display: grid;
 }
-
+::-ms-thumb
 .page-header{
     font-weight: bolder;
     font-size: 32px;

@@ -1,18 +1,14 @@
+import { UnauthorizedError } from '../utils/error.js';
+
 export const protectRoute = (req, res, next) => {
-
     const token = req.cookies.jwt;
-
     if (!token) {
-    return res.status(401).json({ error: 'Login' });
+        throw new UnauthorizedError('Login Required');
     }
-
-
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'jwt-secret-key-very-long');
-        req.user = decoded;           
-        next();                       
-    } catch (err) {
-        return res.status(401).json({ error: 'Not authorized - invalid/expired token' });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'jwt-secret-key-very-long');
+    if (!decoded){
+        throw new UnauthorizedError('JWT Not decoded');
     }
-
+    req.user = decoded;           
+    next();                       
 }
