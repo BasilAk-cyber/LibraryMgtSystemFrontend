@@ -59,7 +59,17 @@ export const libraryLogin = async (req, res) => {
     if (password.length < 8) { 
         throw new ValidationError('Password must be at least 8 characters'); 
     }
-    const library = Library.login(name, password);
+    const library = Library.findOne({ trimmedName });
+    console.log(library);
+    if (!library){
+        throw new NotFoundError("Library not found");
+    }
+    const savedPassword = library.password;
+    const isCorrect = await bcrypt.compare(password, savedPassword); 
+    if (!isCorrect){
+        throw new UnauthorizedError("Incorrect Password");
+    }
+    //const library = Library.login(trimmedName, password);
     const token = generateToken(library);
     res.cookie('jwt', token, { maxAge: 1000 * 60 * 60 * 24, httpOnly: true });
     res.status(201).json({

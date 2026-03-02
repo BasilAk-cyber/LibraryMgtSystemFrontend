@@ -14,7 +14,7 @@ librarySchema.pre('save', async function () {
     this.password = await bcrypt.hash(this.password, salt);          
 });
 
-librarySchema.static.login = async function login(name, password) {
+/* librarySchema.static.login = async function (name, password) {
     const library = Library.findOne({ name });
 
     if (library){
@@ -26,7 +26,7 @@ librarySchema.static.login = async function login(name, password) {
     }
     throw new Error("Library not found");
 }
-
+ */
 
 const Library = mongoose.model('Library', librarySchema);
 
