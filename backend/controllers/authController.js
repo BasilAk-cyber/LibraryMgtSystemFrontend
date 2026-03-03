@@ -2,10 +2,10 @@
 import Library from '../models/library.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+//import { env } from 'node:process';
 import { NotFoundError, ValidationError, UnauthorizedError } from '../utils/error.js';
 
-const JWT_SECRET = '057e33ffca74503789cf086fe3f1217ca1a12f219511e440dd351d80e3e3b4fcc396055bc6a5b54130bb2f7c32b8805f2069295c24a53027343b9114180e7181'; // temp only!
-
+const JWT_SECRET = process.env.JWT_SECRET;
   if (!JWT_SECRET) {
     console.error('JWT_SECRET is not set in environment variables!');
     throw new Error('Server configuration error: JWT secret missing');

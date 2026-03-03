@@ -4,7 +4,7 @@ import Book from '../models/books.js';
 import { NotFoundError, ValidationError, UnauthorizedError } from '../utils/error.js';
 
 export const addBook = async (req, res) => {
-    const{ name, author, isbn, amount = 1} = req.body;
+    const{ name, author, isbn, total = 1, available = total, borrowed = 0} = req.body;
     const library = req.user.id;
 
     if(!library){
@@ -13,14 +13,13 @@ export const addBook = async (req, res) => {
     if (!name || !author || !isbn){
         throw new ValidationError('Please provide all fields')
     }
-    const book = Book.findOne({isbn});
+    const book = await Book.findOne({isbn});
     if (book){
-        book.amount += Number(amount)
-        await book.Save();
+        book.total += Number(total)
+        await book.save();
         return res.status(201).json({msg: "Book added Succesfully", book })
     }
-    const newbook = await Book.create({ name, author, isbn, library, amount });
-    await newbook.save();
+    const newbook = await Book.create({ name, author, isbn, library, total, available, borrowed });
     res.status(201).json({ msg: "Book added Succesfully", newbook })
 }
 
