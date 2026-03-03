@@ -7,6 +7,9 @@ export const addBook = async (req, res) => {
     const{ name, author, isbn, amount = 1} = req.body;
     const library = req.user.id;
 
+    if(!library){
+        throw new UnauthorizedError("Login to add book")
+    }
     if (!name || !author || !isbn){
         throw new ValidationError('Please provide all fields')
     }
@@ -16,13 +19,14 @@ export const addBook = async (req, res) => {
         await book.Save();
         return res.status(201).json({msg: "Book added Succesfully", book })
     }
-    const newbook = await Book.create({ name, author, isbn, amount });
+    const newbook = await Book.create({ name, author, isbn, library, amount });
     await newbook.save();
     res.status(201).json({ msg: "Book added Succesfully", newbook })
 }
 
 export const viewBook = async (req, res) => {
-    const book = Book.find();
+    const libraryId = req.user.id;
+    const book = await Book.find({ library: libraryId }) ;
     if (!book){ throw new NotFoundError("Books not found") }
 }
 

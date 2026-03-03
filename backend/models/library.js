@@ -3,9 +3,9 @@ import bcrypt from 'bcryptjs';
 const Schema = mongoose.Schema;
 
 const librarySchema = new Schema({
-    name: { type: String, required: [true, 'Please enter name'], unique: [true, 'Name already exists'], trim: true, 
+    name: { type: String, required: [true, 'Please enter name'], unique: [true, 'Library already exists'], trim: true, 
             minlength: [3, 'Name should be more than 3 characters'] },
-    password: { type: String, required: true }
+    password: { type: String, required: [true, 'Please enter password'] }
 })
 
 librarySchema.pre('save', async function () {

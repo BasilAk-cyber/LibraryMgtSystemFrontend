@@ -5,11 +5,16 @@ const bookSchema = new Schema({
     name: { type: String, required: true, unique: true },
     author: { type: String, required: true },
     isbn: { type: String, required: true },
+    library: {                       
+        type: Schema.Types.ObjectId,
+        ref: 'Library',                
+        required: [true, "Please login to add book"]                 
+    },
     total: { type: Number },
     available: { type: Number},
     borrowed: {type: Number}
 })
-bookSchema.method.isAvailable = function(){
+bookSchema.methods.isAvailable = function(){
     return this.available > 1;
 }
 
