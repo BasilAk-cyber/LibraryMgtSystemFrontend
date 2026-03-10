@@ -2,10 +2,16 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const borrowedbookSchema = new Schema({
-    name: { type: String, required: true, unique: true },
+    bookname: { type: String, required: true, unique: true },
     memberName: { type: String, required: true },
+    library: {                       
+        type: Schema.Types.ObjectId,
+        ref: 'Library',                
+        required: [true, "Please login to borrow book"]                 
+    },
     date: { type: Date, required: true },
-    fine: { type: Number}
+    fine: { type: Number},
+    status: { type: String, required: true}
 })
 
 

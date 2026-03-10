@@ -4,6 +4,6 @@ import protectRoute from '../middlewares/authMiddleware.js';
 const router = express.Router();
 
 router.post("/add", protectRoute, addMember)
-router.add("/view", protectRoute, viewMembers)
+router.get("/view", protectRoute, viewMembers)
 
 export default router;

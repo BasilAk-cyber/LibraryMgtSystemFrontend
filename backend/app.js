@@ -5,9 +5,9 @@ import authRoute from './routes/authRoutes.js'
 import mongoose from 'mongoose';
 import { errorHandler } from './middlewares/errorMiddleware.js';
 import bookRoute from './routes/bookRoutes.js'
+import memberRoute from './routes/memberRoutes.js'
 /* import Library from './models/library.js'; */
-/* import bookRoute from './routes/bookRoutes.js'
-import memberRoute from './routes/memberRoutes.js' */
+
 
 console.log(process.env.PORT);
 
@@ -24,6 +24,7 @@ app.use(cookieParser());
 
 app.use('/api/v1/library', authRoute);
 app.use('/api/v1/book', bookRoute);
+app.use('/api/v1/member', memberRouteRoute);
 /*  
 app.use('/api/v1/member', memberRoute);  */
 

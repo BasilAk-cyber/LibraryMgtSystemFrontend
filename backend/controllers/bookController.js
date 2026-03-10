@@ -14,12 +14,10 @@ export const addBook = async (req, res) => {
         throw new ValidationError('Please provide all fields')
     }
     const book = await Book.findOne({isbn});
-    if (book){
-        if(book.library === library){
-            book.total += Number(total)
-            await book.save();
-            return res.status(201).json({msg: "Book added Succesfully", book })
-        }
+    if (book && book.library === library){
+        book.total += Number(total)
+        await book.save();
+        return res.status(201).json({msg: "Book added Succesfully", book })
     }
     const newbook = await Book.create({ name, author, isbn, library, total, available, borrowed });
     res.status(201).json({ msg: "Book added Succesfully", newbook })
