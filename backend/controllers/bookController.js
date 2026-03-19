@@ -33,32 +33,35 @@ export const viewBook = async (req, res) => {
 }
 
 export const searchBook = async (req, res) => {
-    const title = req.query.title; 
+    const { title } = req.query; 
     const libraryId = req.user.id;
+    console.log("title:", title);
+    console.log("libraryId:", libraryId);
+    console.log("ObjectId valid:", ObjectId.isValid(libraryId));
     if (!title) {
         throw new ValidationError("Please provide a title to search for");
     }
     if (!libraryId) {
         throw new UnauthorizedError("Login to search for books");
     }
-    const pipeline = [
+    /* const pipeline = [
         {
-            "$search": {
-                "index": "book_default",
-                "compund": {
-                    "must": [{
-                        "text": {
-                            "query": title,
-                            "path": ["name", "author"],
-                            "fuzzy": {
-                                "maxEdits": 2
+            $search: {
+                index: "book_default",
+                compound: {
+                    must: [{
+                        text: {
+                            query: title,
+                            path: ["name", "author"],
+                            fuzzy: {
+                                maxEdits: 2
                             }
                         }
                     }],
-                    "filter": [{
-                        "equals": {
-                            "query": new ObjectId(libraryId),
-                            "path": "library"
+                    filter: [{
+                        equals: {
+                            query: new ObjectId(libraryId),
+                            path: "library"
                         }
                     }]
                 }
@@ -73,8 +76,34 @@ export const searchBook = async (req, res) => {
                 available: 1
             }
         }
+    ]; */
+    const pipeline = [
+        {
+            $search: {
+            index: "book_default",
+            text: {
+                query: title,
+                path: ["name", "author"],
+                fuzzy: { maxEdits: 2 }
+            }
+            }
+        },
+        { 
+            $match: { 
+            library: new ObjectId(libraryId) 
+            } 
+        },
+        {
+            $project: {
+            name: 1,
+            author: 1,
+            isbn: 1,
+            library: 1,
+            available: 1
+            }
+        }
     ];
-    const books = await Book.aggregate(pipeline).toArray();
+    const books = await Book.aggregate(pipeline);
     if (books.length === 0) {
         throw new NotFoundError("No books found matching the title");
     }

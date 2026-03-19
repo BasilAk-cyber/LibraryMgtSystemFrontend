@@ -1,5 +1,6 @@
 //Login, SignUp, Logout and create token logic for library
 import Library from '../models/library.js';
+import  Member, { memberStatus } from '../models/member.js';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 //import { env } from 'node:process';
@@ -81,4 +82,19 @@ export const libraryLogin = async (req, res) => {
         name: library.name,
         },
     });
+}
+
+export const memberVerifyEmail = async (req, res) => {
+    const { token } = req.query;
+    if (!token) {
+        throw new ValidationError("Verification token is required");
+    }
+    const member = await Member.findOne({ verifyToken: token });
+    if (!member) {
+        throw new NotFoundError("Invalid verification token");
+    }
+    member.verifyed = memberStatus.VERIFIED;
+    member.verifyToken = undefined;
+    await member.save();
+    res.status(200).json({ msg: "Email verified successfully", member });
 }

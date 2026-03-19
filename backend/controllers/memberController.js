@@ -1,14 +1,26 @@
 // Add, View and Search Logic for members
 
-import Member from '../models/member.js';
+import  Member, { memberStatus } from '../models/member.js';
 import { UnauthorizedError, ValidationError } from '../utils/error.js';
+import { sendVerificationEmail } from '../utils/email.js';
+import { ObjectId } from 'mongodb';
+import crypto from 'crypto';
 
 export const addMember = async (req, res) => {
     const { name, email, debt = 0} = req.body;
     const library = req.user.id;
-    if (!library){ throw new UnauthorizedError(" Please login to carry out this action")}
-    if (!name  || !email){ throw new ValidationError("Please enter appropriate fields"); }
-    const member = await Member.create({ name, email, library, debt });
+    if (!library){ 
+        throw new UnauthorizedError(" Please login to carry out this action")
+    }
+    if (!name  || !email){
+        throw new ValidationError("Please enter appropriate fields"); 
+    }
+    const verifyToken = crypto.randomBytes(32).toString('hex');
+    const member = await Member.create({ name, email, library, verifyToken, debt });
+    await sendVerificationEmail(email, { 
+        name, 
+        verificationLink: `${process.env.BASE_URL}/api/v1/library/verify-email?token=${verifyToken}` 
+    });
     res.status(201).json({ msg:"User created succesfully", member })   
 }
 
